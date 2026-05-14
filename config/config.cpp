@@ -166,8 +166,13 @@ outdir_done:
   }  
   
   //Setting CheckpointDirectory
-  try { 
-    hemo::global.checkpointDirectory = plb::global::directories().getOutputDir() + "/" + (*cfg)["parameters"]["checkpointDirectory"].read<string>() + "/";
+  try {
+    std::string chkVal = (*cfg)["parameters"]["checkpointDirectory"].read<string>();
+    if (!chkVal.empty() && chkVal[0] == '/') {
+      hemo::global.checkpointDirectory = chkVal + "/";
+    } else {
+      hemo::global.checkpointDirectory = plb::global::directories().getOutputDir() + "/" + chkVal + "/";
+    }
   } catch (std::invalid_argument & exception) {
     hemo::global.checkpointDirectory = plb::global::directories().getOutputDir() + "/checkpoint/";
   }
