@@ -1,0 +1,21 @@
+#!/bin/bash
+# FILENAME: pipe_testing
+
+#SBATCH --job-name=pi_50um_8010
+#SBATCH --mail-user=cerice@umich.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=32
+#SBATCH --mem-per-cpu=2500m
+#SBATCH --time=00-24:00:00
+#SBATCH --account=rlarson1
+#SBATCH --partition=standard
+#SBATCH --output=%x-%j.log
+#SBATCH --error=%x-%j.err
+
+# Manage processing environment, load compilers and applications.
+module load gcc openmpi cmake hdf5 python
+module list
+
+#run executable
+mpirun -n 128 ./pipeflow_50um_80hRBC20rRBC config.xml
